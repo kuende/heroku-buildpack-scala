@@ -296,12 +296,18 @@ run_sbt() {
   local home=$2
   local launcher=$3
   local tasks=$4
+  local mem=$5
   local buildLogFile=".heroku/sbt-build.log"
 
   echo "" > $buildLogFile
 
-  status "Running: sbt $tasks"
-  SBT_HOME="$home" sbt ${tasks} | output $buildLogFile
+  if [ $mem ]; then
+    status "Running: sbt -mem $mem $tasks"
+    SBT_HOME="$home" sbt -mem ${mem} ${tasks} | output $buildLogFile
+  else
+    status "Running: sbt $tasks"
+    SBT_HOME="$home" sbt ${tasks} | output $buildLogFile
+  fi
 
   if [ "${PIPESTATUS[*]}" != "0 0" ]; then
     handle_sbt_errors $buildLogFile

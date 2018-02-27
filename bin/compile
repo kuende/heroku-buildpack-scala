@@ -51,6 +51,7 @@ KEEP_PLAY_FORK_RUN=$(get_property "$SYSPROPFILE" "sbt.keep-play-fork-run" "${KEE
 SBT_PROJECT=$(get_property "$SYSPROPFILE" "sbt.project")
 SBT_PRE_TASKS=$(get_property "$SYSPROPFILE" "sbt.pre-tasks" "$SBT_PRE_TASKS")
 SBT_CLEAN=$(get_property "$SYSPROPFILE" "sbt.clean" "${SBT_CLEAN:-false}")
+SBT_MEM=$(get_property "$SYSPROPFILE" "sbt.mem" "${SBT_MEM}")
 
 # Install the JDK
 install_jdk $BUILD_DIR
@@ -154,7 +155,7 @@ if [ ! -d "$SBT_USER_HOME/.ivy2" ]; then
 fi
 
 # build app
-run_sbt "$javaVersion" "$SBT_USER_HOME_ABSOLUTE" "$SBT_BINDIR/$SBT_JAR" "$SBT_TASKS"
+run_sbt "$javaVersion" "$SBT_USER_HOME_ABSOLUTE" "$SBT_BINDIR/$SBT_JAR" "$SBT_TASKS" "$SBT_MEM"
 
 # repack cache
 mkdir -p $CACHE_DIR
